@@ -2,7 +2,7 @@ export const signupReq = (
   email = 'test@test.com',
   password = 'password123'
 ) => {
-  return new Request('http://localhost:3000/api/signup', {
+  return new Request('http://localhost:3000/api/auth/signup', {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
@@ -15,7 +15,7 @@ export const signupReq = (
 };
 
 export const loginReq = (email = 'test@test.com', password = 'password123') => {
-  return new Request('http://localhost:3000/api/login', {
+  return new Request('http://localhost:3000/api/auth/login', {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
@@ -28,7 +28,7 @@ export const loginReq = (email = 'test@test.com', password = 'password123') => {
 };
 
 export const logoutReq = () => {
-  return new Request('http://localhost:3000/api/logout', {
+  return new Request('http://localhost:3000/api/auth/logout', {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',

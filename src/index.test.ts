@@ -2,7 +2,6 @@ import { describe, expect, it, beforeEach, afterEach, mock } from 'bun:test';
 import app from '.';
 import { createTestDb } from './test/test-db';
 import { Database } from 'bun:sqlite';
-import { dbConn } from './db/db';
 import { loginReq, logoutReq, signupReq } from './test/test-helpers';
 
 let db: Database;

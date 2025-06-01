@@ -2,7 +2,7 @@ http://localhost:3000
 
 ###
 
-POST http://localhost:3000/api/signup
+POST http://localhost:3000/api/auth/signup
 Content-Type: application/json
 
 {
@@ -13,7 +13,7 @@ Content-Type: application/json
 ###
 # @name login
 
-POST http://localhost:3000/api/login
+POST http://localhost:3000/api/auth/login
 Content-Type: application/json
 
 {
@@ -22,5 +22,5 @@ Content-Type: application/json
 }
 
 ###
-GET http://localhost:3000/api/auth/me
+GET http://localhost:3000/api/auth/protected/me
 Cookie: {{login.response.headers.Set-Cookie}}
