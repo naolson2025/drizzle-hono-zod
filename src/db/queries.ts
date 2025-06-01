@@ -64,3 +64,11 @@ export const insertTodo = (db: Database, todo: NewTodo) => {
 
   return result;
 };
+
+export const getTodosByUserId = (db: Database, userId: string) => {
+  const todosQuery = db.query(
+    'SELECT * FROM todos WHERE user_id = ? ORDER BY created_at DESC'
+  );
+  const todos = todosQuery.all(userId) as Todo[];
+  return todos;
+};
