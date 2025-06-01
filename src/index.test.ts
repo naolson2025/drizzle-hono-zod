@@ -126,3 +126,56 @@ describe('logout', () => {
     expect(cookies).toMatch(/authToken=;/);
   });
 });
+
+describe('create todo', () => {
+  it('should return 401 if user is not authenticated', async () => {
+    const req = new Request('http://localhost/api/protected/todos', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        title: 'Test Todo',
+        description: 'This is a test todo',
+        completed: false,
+      }),
+    });
+    const res = await app.fetch(req);
+    const resText = await res.text();
+    expect(res.status).toBe(401);
+    expect(resText).toBe('Unauthorized');
+  });
+
+  it('should create a todo for an authenticated user', async () => {
+    // signup a user
+    const req = signupReq();
+    const res = await app.fetch(req);
+    expect(res.status).toBe(200);
+
+    // create todo
+    const todoReq = new Request('http://localhost/api/protected/todos', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        Cookie: res.headers.get('set-cookie') || '',
+      },
+      body: JSON.stringify({
+        title: 'Test Todo',
+        description: 'This is a test todo',
+        completed: false,
+      }),
+    });
+    const todoRes = await app.fetch(todoReq);
+    const json = await todoRes.json();
+    expect(todoRes.status).toBe(201);
+    expect(json).toEqual({
+      id: expect.any(String),
+      user_id: expect.any(String),
+      title: 'Test Todo',
+      description: 'This is a test todo',
+      completed: 0,
+      created_at: expect.any(String),
+      updated_at: expect.any(String),
+    });
+  });
+});

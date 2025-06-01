@@ -24,3 +24,18 @@ Content-Type: application/json
 ###
 GET http://localhost:3000/api/auth/protected/me
 Cookie: {{login.response.headers.Set-Cookie}}
+
+###
+POST http://localhost:3000/api/protected/todos
+Content-Type: application/json
+Cookie: {{login.response.headers.Set-Cookie}}
+
+{
+  "title": "Test Todo",
+  "description": "This is a test todo item",
+  "completed": false
+}
+
+###
+GET http://localhost:3000/api/protected/todos
+Cookie: {{login.response.headers.Set-Cookie}}

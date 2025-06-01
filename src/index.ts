@@ -2,6 +2,7 @@ import { Hono } from 'hono';
 import { csrf } from 'hono/csrf';
 import { jwt } from 'hono/jwt';
 import { auth } from './auth/auth.routes';
+import { todos } from './todos/todos.routes';
 
 const secret = process.env.JWT_SECRET;
 if (!secret) {
@@ -19,6 +20,7 @@ app
     }
     await next();
   })
-  .route('/', auth);
+  .route('/api', auth)
+  .route('/api/protected', todos);
 
 export default app;

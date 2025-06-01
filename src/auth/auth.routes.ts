@@ -8,7 +8,7 @@ import { deleteCookie, setCookie } from 'hono/cookie';
 export const auth = new Hono();
 
 auth
-  .post('/api/auth/signup', signupValidator, async (c) => {
+  .post('/auth/signup', signupValidator, async (c) => {
     const db = dbConn();
     // validate the users input
     const { email, password } = c.req.valid('json');
@@ -36,7 +36,7 @@ auth
       return c.json({ errors: ['Internal server error'] }, 500);
     }
   })
-  .post('/api/auth/login', signupValidator, async (c) => {
+  .post('/auth/login', signupValidator, async (c) => {
     const db = dbConn();
     // validate user input
     const { email, password } = c.req.valid('json');
@@ -71,7 +71,7 @@ auth
       return c.json({ error: 'Internal Server Error' }, 500);
     }
   })
-  .post('/api/auth/logout', async (c) => {
+  .post('/auth/logout', async (c) => {
     deleteCookie(c, 'authToken', {
       path: '/',
       secure: process.env.NODE_ENV === 'production',
@@ -81,7 +81,7 @@ auth
 
     return c.json({ message: 'Logout successful' });
   })
-  .get('/api/auth/protected/me', async (c) => {
+  .get('/auth/protected/me', async (c) => {
     const db = dbConn();
     const payload = c.get('jwtPayload');
     console.log('JWT Payload: ', payload);
