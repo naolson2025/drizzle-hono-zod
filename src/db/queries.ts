@@ -1,5 +1,6 @@
 import { type UUID, randomUUID } from 'crypto';
 import { Database } from 'bun:sqlite';
+import { NewTodo, Todo } from '../todos/types';
 
 export const insertUser = async (
   db: Database,
@@ -40,4 +41,26 @@ export const getUserById = (db: Database, id: string) => {
     email: string;
   } | null;
   return user;
+};
+
+export const insertTodo = (db: Database, todo: NewTodo) => {
+  const todoId = randomUUID();
+
+  const insertQuery = db.query(
+    `
+    INSERT INTO todos (id, user_id, title, description, completed)
+    VALUES (?, ?, ?, ?, ?)
+    RETURNING *
+    `
+  );
+
+  const result = insertQuery.get(
+    todoId,
+    todo.user_id,
+    todo.title,
+    todo.description ?? null,
+    todo.completed ?? false
+  ) as Todo;
+
+  return result;
 };
