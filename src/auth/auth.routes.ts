@@ -1,5 +1,5 @@
 import { Hono } from 'hono';
-import { dbConn } from '../db/db';
+import { db } from '../db/db';
 import { signupValidator } from './signup.schema';
 import { getUserByEmail, getUserById, insertUser } from '../db/queries';
 import { cookieOpts, generateToken } from '../helpers';
@@ -9,7 +9,6 @@ export const auth = new Hono();
 
 auth
   .post('/auth/signup', signupValidator, async (c) => {
-    const db = dbConn();
     // validate the users input
     const { email, password } = c.req.valid('json');
     try {
@@ -37,7 +36,6 @@ auth
     }
   })
   .post('/auth/login', signupValidator, async (c) => {
-    const db = dbConn();
     // validate user input
     const { email, password } = c.req.valid('json');
 
@@ -50,7 +48,7 @@ auth
       // verify password matches
       const passwordMatch = await Bun.password.verify(
         password,
-        user.password_hash
+        user.passwordHash
       );
       // if doesn't match then return 401
       if (!passwordMatch) {
@@ -82,9 +80,7 @@ auth
     return c.json({ message: 'Logout successful' });
   })
   .get('/auth/protected/me', async (c) => {
-    const db = dbConn();
     const payload = c.get('jwtPayload');
-    console.log('JWT Payload: ', payload);
 
     try {
       // fetch user by id

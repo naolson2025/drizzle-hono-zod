@@ -31,7 +31,7 @@ Content-Type: application/json
 Cookie: {{login.response.headers.Set-Cookie}}
 
 {
-  "title": "Test Todo",
+  "title": "Test Todo 2",
   "description": "This is a test todo item",
   "completed": false
 }

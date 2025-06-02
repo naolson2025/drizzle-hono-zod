@@ -1,5 +1,5 @@
 import { Hono } from 'hono';
-import { dbConn } from '../db/db';
+import { db } from '../db/db';
 import { insertTodo, getTodosByUserId } from '../db/queries';
 import { createTodoValidator } from './create.todo.schema';
 
@@ -7,13 +7,12 @@ export const todos = new Hono();
 
 todos
   .post('/todos', createTodoValidator, async (c) => {
-    const db = dbConn();
     const { sub } = c.get('jwtPayload');
     const { title, description, completed } = c.req.valid('json');
 
     try {
       const todo = insertTodo(db, {
-        user_id: sub,
+        userId: sub,
         title,
         description,
         completed,
@@ -26,7 +25,6 @@ todos
     }
   })
   .get('/todos', async (c) => {
-    const db = dbConn();
     const { sub } = c.get('jwtPayload');
 
     try {

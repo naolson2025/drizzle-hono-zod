@@ -10,6 +10,11 @@ if (!secret) {
   process.exit(1);
 }
 
+if (!process.env.DB_FILE_NAME) {
+  console.error('DB_FILE_NAME is not configured.');
+  process.exit(1);
+}
+
 const app = new Hono();
 
 app
