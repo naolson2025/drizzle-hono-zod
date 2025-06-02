@@ -1,24 +1,25 @@
 import { describe, expect, it, beforeEach, afterEach, mock } from 'bun:test';
 import app from '.';
-import { createTestDb } from './test/test-db';
+// import { createTestDb } from './test/test-db';
 import { Database } from 'bun:sqlite';
 import { loginReq, logoutReq, signupReq } from './test/test-helpers';
+import { BunSQLiteDatabase } from 'drizzle-orm/bun-sqlite';
 
-let db: Database;
+let db: BunSQLiteDatabase;
 
-mock.module('../src/db/db.ts', () => {
-  return {
-    dbConn: () => db,
-  };
-});
+// mock.module('../src/db/db.ts', () => {
+//   return {
+//     dbConn: () => db,
+//   };
+// });
 
-beforeEach(() => {
-  db = createTestDb();
-});
+// beforeEach(() => {
+//   db = createTestDb();
+// });
 
-afterEach(() => {
-  db.close();
-});
+// afterEach(() => {
+//   db.close();
+// });
 
 describe('signup endpoint', () => {
   it('should signup a user', async () => {
