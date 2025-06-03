@@ -1,6 +1,6 @@
 import { type UUID, randomUUID } from 'crypto';
-// import { Database } from 'bun:sqlite';
-import { NewTodo } from '../todos/types';
+import { Database } from 'bun:sqlite';
+import { NewTodo, Todo } from '../todos/types';
 import { BunSQLiteDatabase } from 'drizzle-orm/bun-sqlite';
 import { todosTable, usersTable } from './schema';
 import { eq, desc } from 'drizzle-orm';
@@ -91,7 +91,7 @@ export const insertTodo = (db: BunSQLiteDatabase, todo: NewTodo) => {
 
   // const result = insertQuery.get(
   //   todoId,
-  //   todo.user_id,
+  //   todo.userId,
   //   todo.title,
   //   todo.description ?? null,
   //   todo.completed ?? false
