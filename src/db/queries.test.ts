@@ -15,7 +15,7 @@ let db: BunSQLiteDatabase;
 
 beforeEach(async () => {
   db = drizzle({ casing: 'snake_case' });
-  migrate(db, { migrationsFolder: './drizzle' });
+  migrate(db, { migrationsFolder: './src/db/drizzle' });
 });
 
 describe('insertUser', () => {

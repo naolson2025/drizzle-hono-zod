@@ -7,7 +7,7 @@ import { migrate } from 'drizzle-orm/bun-sqlite/migrator';
 beforeEach(() => {
   mock.module('../src/db/db.ts', () => {
     const db = drizzle({ casing: 'snake_case' });
-    migrate(db, { migrationsFolder: './drizzle' });
+    migrate(db, { migrationsFolder: './src/db/drizzle' });
 
     return { db };
   });

@@ -7,9 +7,9 @@ export const usersTable = sqliteTable('users', {
   passwordHash: text().notNull(),
 });
 
-export const usersRelations = relations(usersTable, ({ many }) => ({
-  todos: many(todosTable),
-}));
+// export const usersRelations = relations(usersTable, ({ many }) => ({
+//   todos: many(todosTable),
+// }));
 
 export const todosTable = sqliteTable('todos', {
   id: text().primaryKey(),
@@ -25,9 +25,9 @@ export const todosTable = sqliteTable('todos', {
 
 // this is an application level abstration to help query the todos table
 // it doesn't add relations to the database schema
-export const todosRelations = relations(todosTable, ({ one }) => ({
-  user: one(usersTable, {
-    fields: [todosTable.userId],
-    references: [usersTable.id],
-  }),
-}));
+// export const todosRelations = relations(todosTable, ({ one }) => ({
+//   user: one(usersTable, {
+//     fields: [todosTable.userId],
+//     references: [usersTable.id],
+//   }),
+// }));
