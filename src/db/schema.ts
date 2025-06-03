@@ -1,4 +1,4 @@
-import { sql, relations } from 'drizzle-orm';
+import { sql } from 'drizzle-orm';
 import { sqliteTable, text, integer } from 'drizzle-orm/sqlite-core';
 
 export const usersTable = sqliteTable('users', {
@@ -6,10 +6,6 @@ export const usersTable = sqliteTable('users', {
   email: text().unique().notNull(),
   passwordHash: text().notNull(),
 });
-
-// export const usersRelations = relations(usersTable, ({ many }) => ({
-//   todos: many(todosTable),
-// }));
 
 export const todosTable = sqliteTable('todos', {
   id: text().primaryKey(),
@@ -22,12 +18,3 @@ export const todosTable = sqliteTable('todos', {
   createdAt: text().default(sql`(CURRENT_TIMESTAMP)`),
   updatedAt: text().default(sql`(CURRENT_TIMESTAMP)`),
 });
-
-// this is an application level abstration to help query the todos table
-// it doesn't add relations to the database schema
-// export const todosRelations = relations(todosTable, ({ one }) => ({
-//   user: one(usersTable, {
-//     fields: [todosTable.userId],
-//     references: [usersTable.id],
-//   }),
-// }));
