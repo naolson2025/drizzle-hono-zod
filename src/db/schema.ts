@@ -1,10 +1,11 @@
 import { sql } from 'drizzle-orm';
-import { sqliteTable, text, integer } from 'drizzle-orm/sqlite-core';
+import { sqliteTable, text, integer, int } from 'drizzle-orm/sqlite-core';
 
 export const usersTable = sqliteTable('users', {
   id: text().primaryKey(),
   email: text().unique().notNull(),
   passwordHash: text().notNull(),
+  age: int(),
 });
 
 export const todosTable = sqliteTable('todos', {
