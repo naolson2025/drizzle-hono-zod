@@ -1,0 +1,27 @@
+{
+  "version": "7",
+  "dialect": "sqlite",
+  "entries": [
+    {
+      "idx": 0,
+      "version": "6",
+      "when": 1748807694433,
+      "tag": "0000_tearful_thunderbolt_ross",
+      "breakpoints": true
+    },
+    {
+      "idx": 1,
+      "version": "6",
+      "when": 1748864566615,
+      "tag": "0001_salty_maggott",
+      "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "6",
+      "when": 1749123541787,
+      "tag": "0002_flaky_the_professor",
+      "breakpoints": true
+    }
+  ]
+}

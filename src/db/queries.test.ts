@@ -5,19 +5,17 @@ import {
   insertTodo,
   insertUser,
 } from './queries';
-import { createTestDb } from '../test/test-db';
-import { Database } from 'bun:sqlite';
 import { NewTodo } from '../todos/types';
 import { randomUUID } from 'crypto';
+import { BunSQLiteDatabase } from 'drizzle-orm/bun-sqlite';
+import { drizzle } from 'drizzle-orm/bun-sqlite';
+import { migrate } from 'drizzle-orm/bun-sqlite/migrator';
 
-let db: Database;
+let db: BunSQLiteDatabase;
 
-beforeEach(() => {
-  db = createTestDb();
-});
-
-afterEach(() => {
-  db.close();
+beforeEach(async () => {
+  db = drizzle({ casing: 'snake_case' });
+  migrate(db, { migrationsFolder: './src/db/drizzle' });
 });
 
 describe('insertUser', () => {
@@ -65,10 +63,10 @@ describe('getUserByEmail', () => {
     expect(user).toBeDefined();
   });
 
-  it('returns null when there is no user by that email', async () => {
+  it('returns undefined when there is no user by that email', async () => {
     const email = 'test@test.com';
     const user = getUserByEmail(db, email);
-    expect(user).toBeNull();
+    expect(user).toBeUndefined();
   });
 });
 
@@ -79,7 +77,7 @@ describe('insertTodo', () => {
     const userId = await insertUser(db, email, password);
 
     const newTodo = {
-      user_id: userId,
+      userId: userId,
       title: 'Test Todo',
       description: 'This is a test todo',
       completed: false,
@@ -88,17 +86,17 @@ describe('insertTodo', () => {
 
     expect(todo).toBeDefined();
     expect(todo.id).toBeDefined();
-    expect(todo.user_id).toBe(newTodo.user_id);
+    expect(todo.userId).toBe(newTodo.userId);
     expect(todo.title).toBe(newTodo.title);
     expect(todo.description).toBe(newTodo.description!);
     expect(todo.completed).toBeFalsy();
-    expect(todo.created_at).toBeDefined();
-    expect(todo.updated_at).toBeDefined();
+    expect(todo.createdAt).toBeDefined();
+    expect(todo.updatedAt).toBeDefined();
   });
 
   it('should throw an error if user_id does not exist', () => {
     const newTodo = {
-      user_id: randomUUID(), // Non-existent user ID
+      userId: randomUUID(), // Non-existent user ID
       title: 'Test Todo',
       description: 'This is a test todo',
       completed: false,
@@ -118,7 +116,7 @@ describe('insertTodo', () => {
     const password = 'password123';
     const userId = await insertUser(db, email, password);
     const newTodo = {
-      user_id: userId,
+      userId: userId,
       title: '', // Empty title
       description: 'This is a test todo',
       completed: false,
@@ -138,13 +136,13 @@ describe('getTodosByUserId', () => {
     const userId = await insertUser(db, 'test@test.com', 'password123');
 
     const newTodo1 = {
-      user_id: userId,
+      userId: userId,
       title: 'Test Todo 1',
       description: 'This is the first test todo',
       completed: false,
     } as NewTodo;
     const newTodo2 = {
-      user_id: userId,
+      userId: userId,
       title: 'Test Todo 2',
       description: 'This is the second test todo',
       completed: true,
@@ -154,8 +152,8 @@ describe('getTodosByUserId', () => {
     const todos = getTodosByUserId(db, userId);
     expect(todos).toBeDefined();
     expect(todos.length).toBe(2);
-    expect(todos[0].user_id).toBe(userId);
-    expect(todos[1].user_id).toBe(userId);
+    expect(todos[0].userId).toBe(userId);
+    expect(todos[1].userId).toBe(userId);
     expect(todos[0].title).toBe(newTodo1.title);
     expect(todos[1].title).toBe(newTodo2.title);
     expect(todos[0].description).toBe(newTodo1.description!);

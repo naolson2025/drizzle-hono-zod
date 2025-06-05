@@ -1,23 +1,16 @@
-import { describe, expect, it, beforeEach, afterEach, mock } from 'bun:test';
+import { describe, expect, it, beforeEach, mock } from 'bun:test';
 import app from '.';
-import { createTestDb } from './test/test-db';
-import { Database } from 'bun:sqlite';
 import { loginReq, logoutReq, signupReq } from './test/test-helpers';
-
-let db: Database;
-
-mock.module('../src/db/db.ts', () => {
-  return {
-    dbConn: () => db,
-  };
-});
+import { drizzle } from 'drizzle-orm/bun-sqlite';
+import { migrate } from 'drizzle-orm/bun-sqlite/migrator';
 
 beforeEach(() => {
-  db = createTestDb();
-});
+  mock.module('../src/db/db.ts', () => {
+    const db = drizzle({ casing: 'snake_case' });
+    migrate(db, { migrationsFolder: './src/db/drizzle' });
 
-afterEach(() => {
-  db.close();
+    return { db };
+  });
 });
 
 describe('signup endpoint', () => {
@@ -170,12 +163,12 @@ describe('create todo', () => {
     expect(todoRes.status).toBe(201);
     expect(json).toEqual({
       id: expect.any(String),
-      user_id: expect.any(String),
+      userId: expect.any(String),
       title: 'Test Todo',
       description: 'This is a test todo',
-      completed: 0,
-      created_at: expect.any(String),
-      updated_at: expect.any(String),
+      completed: false,
+      createdAt: expect.any(String),
+      updatedAt: expect.any(String),
     });
   });
 });
